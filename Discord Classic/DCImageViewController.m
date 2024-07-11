@@ -16,6 +16,9 @@
 
 - (void)viewDidLoad{
 	[super viewDidLoad];
+    [self.share setBackgroundImage:[UIImage imageNamed:@"BarButton"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.share setBackgroundImage:[UIImage imageNamed:@"BarButtonPressed"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
 }
 
 - (void)viewDidUnload {

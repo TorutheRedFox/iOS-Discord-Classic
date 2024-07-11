@@ -20,6 +20,13 @@
 @property (weak, nonatomic) IBOutlet UITextView *inputField;
 @property (weak, nonatomic) IBOutlet UILabel *inputFieldPlaceholder;
 @property (weak, nonatomic) IBOutlet UIImageView *insetShadow;
+
+
+//buttons
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *memberButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sendButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *photoButton;
+
 @property bool viewingPresentTime;
 
 @property DCMessage *selectedMessage;

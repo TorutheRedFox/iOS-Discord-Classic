@@ -95,6 +95,10 @@
 		5B9269E92B654033003351BB /* DCContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B9269E82B654033003351BB /* DCContactViewController.m */; };
 		5BB417582B66761A00735AC3 /* DCIntroductionPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB417572B66761A00735AC3 /* DCIntroductionPage.m */; };
 		5BB4175A2B667E8300735AC3 /* Discord.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BB417592B667E8300735AC3 /* Discord.png */; };
+		5BC04ABC2C408452002DB7D9 /* Border.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BC04AB82C408452002DB7D9 /* Border.png */; };
+		5BC04ABD2C408452002DB7D9 /* Border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BC04AB92C408452002DB7D9 /* Border@2x.png */; };
+		5BC04ABE2C408452002DB7D9 /* No-header.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BC04ABA2C408452002DB7D9 /* No-header.png */; };
+		5BC04ABF2C408452002DB7D9 /* No-Header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BC04ABB2C408452002DB7D9 /* No-Header@2x.png */; };
 		5BCE5F372B65561400F5E66B /* ContactsBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BCE5F352B65561400F5E66B /* ContactsBar.png */; };
 		5BCE5F382B65561400F5E66B /* ContactsBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5BCE5F362B65561400F5E66B /* ContactsBar@2x.png */; };
 		5BCE5F422B655EDF00F5E66B /* DCMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BCE5F412B655EDF00F5E66B /* DCMenuViewController.m */; };
@@ -254,6 +258,10 @@
 		5BB417562B66761A00735AC3 /* DCIntroductionPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCIntroductionPage.h; sourceTree = "<group>"; };
 		5BB417572B66761A00735AC3 /* DCIntroductionPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCIntroductionPage.m; sourceTree = "<group>"; };
 		5BB417592B667E8300735AC3 /* Discord.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Discord.png; sourceTree = "<group>"; };
+		5BC04AB82C408452002DB7D9 /* Border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Border.png; sourceTree = "<group>"; };
+		5BC04AB92C408452002DB7D9 /* Border@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Border@2x.png"; sourceTree = "<group>"; };
+		5BC04ABA2C408452002DB7D9 /* No-header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-header.png"; sourceTree = "<group>"; };
+		5BC04ABB2C408452002DB7D9 /* No-Header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "No-Header@2x.png"; sourceTree = "<group>"; };
 		5BCE5F352B65561400F5E66B /* ContactsBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ContactsBar.png; sourceTree = "<group>"; };
 		5BCE5F362B65561400F5E66B /* ContactsBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ContactsBar@2x.png"; sourceTree = "<group>"; };
 		5BCE5F402B655EDF00F5E66B /* DCMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCMenuViewController.h; sourceTree = "<group>"; };
@@ -491,6 +499,7 @@
 		2C0EBB722ADB15F400A23EB8 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5BC04AB72C4083F3002DB7D9 /* Banner Resources */,
 				5B5D67962B78CDFB006F7FC4 /* New */,
 				5B23D11D2B6579DD008B5587 /* Images.xcassets */,
 				7D00DBAD2B00E27700B27C97 /* Button Glyphs */,
@@ -605,6 +614,18 @@
 			);
 			name = New;
 			path = Images/New;
+			sourceTree = "<group>";
+		};
+		5BC04AB72C4083F3002DB7D9 /* Banner Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5BC04AB82C408452002DB7D9 /* Border.png */,
+				5BC04AB92C408452002DB7D9 /* Border@2x.png */,
+				5BC04ABA2C408452002DB7D9 /* No-header.png */,
+				5BC04ABB2C408452002DB7D9 /* No-Header@2x.png */,
+			);
+			name = "Banner Resources";
+			path = "Images/Banner Resources";
 			sourceTree = "<group>";
 		};
 		7D00DBAD2B00E27700B27C97 /* Button Glyphs */ = {
@@ -777,10 +798,12 @@
 				2C0EBB8A2ADB16FB00A23EB8 /* DefaultAvatar2.png in Resources */,
 				5B5D679D2B78CDFB006F7FC4 /* DirectMessages.png in Resources */,
 				7D672E312B012D42003C1A78 /* commandbar-bg.png in Resources */,
+				5BC04ABF2C408452002DB7D9 /* No-Header@2x.png in Resources */,
 				2C0EBB8F2ADB16FB00A23EB8 /* DefaultAvatar4@2x.png in Resources */,
 				2C0EBB912ADB16FB00A23EB8 /* DefaultAvatar5@2x.png in Resources */,
 				2C0EBB892ADB16FB00A23EB8 /* DefaultAvatar1@2x.png in Resources */,
 				5B79C7B72B78B273001648BB /* reply.png in Resources */,
+				5BC04ABD2C408452002DB7D9 /* Border@2x.png in Resources */,
 				2CF920162AF7F36300249D6A /* PLVideoOverlayPlay.png in Resources */,
 				5B47489A2B65D17E00123A1F /* bag-xml.png in Resources */,
 				2CF920172AF7F36300249D6A /* PLVideoOverlayPlay@2x.png in Resources */,
@@ -791,6 +814,7 @@
 				5B5D679C2B78CDFB006F7FC4 /* border.png in Resources */,
 				2C0EBB702ADB15DC00A23EB8 /* DirectMessages.png in Resources */,
 				2C0EBB902ADB16FB00A23EB8 /* DefaultAvatar5.png in Resources */,
+				5BC04ABE2C408452002DB7D9 /* No-header.png in Resources */,
 				2C0EBB8D2ADB16FB00A23EB8 /* DefaultAvatar3@2x.png in Resources */,
 				7D7862232B00F9F500B9C099 /* Send@2x.png in Resources */,
 				5B5D67A82B78CF61006F7FC4 /* TopLogo@2x.png in Resources */,
@@ -801,6 +825,7 @@
 				2C0EBB872ADB16FB00A23EB8 /* DefaultAvatar0@2x.png in Resources */,
 				5B5D679E2B78CDFB006F7FC4 /* DirectMessages@2x.png in Resources */,
 				2C0EBB862ADB16FB00A23EB8 /* DefaultAvatar0.png in Resources */,
+				5BC04ABC2C408452002DB7D9 /* Border.png in Resources */,
 				2CF920192AF7F36300249D6A /* PLVideoOverlayPlayDown@2x.png in Resources */,
 				09A4EA672079220E00DECFD6 /* DCChatTableCell.xib in Resources */,
 				09F4C6F121A6EBD40018F312 /* FontAwesome.ttf in Resources */,

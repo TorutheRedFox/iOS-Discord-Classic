@@ -43,8 +43,7 @@
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <color key="textColor" red="0.87657099179999998" green="0.87657099179999998" blue="0.87657099179999998" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="shadowColor" red="1" green="1" blue="1" alpha="0.32000000000000001" colorSpace="calibratedRGB"/>
-                        <size key="shadowOffset" width="0.0" height="1"/>
+                        <color key="shadowColor" red="0.054901960780000002" green="0.058823529409999999" blue="0.062745098040000002" alpha="1" colorSpace="deviceRGB"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3HZ-iS-aC5">
                         <rect key="frame" x="110" y="26" width="254" height="16"/>
