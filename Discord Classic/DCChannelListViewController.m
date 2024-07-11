@@ -31,6 +31,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
 	[self.navigationItem setTitle:self.selectedGuild.name];
+    [self.tableView reloadData];
 	[DCServerCommunicator.sharedInstance setSelectedChannel:nil];
     if ([self.navigationItem.title isEqualToString:@"Direct Messages"]) {
         // Sort the DMs list by most recent...

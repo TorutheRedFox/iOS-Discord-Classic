@@ -16,9 +16,9 @@
 
 @implementation DCCInfoViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
     }
@@ -64,7 +64,6 @@
     cell.textLabel.text = [[DCServerCommunicator.sharedInstance.selectedChannel.users objectAtIndex:indexPath.row] valueForKey:@"username"];
     return cell;
 }
-
 
 /*
  // Override to support conditional editing of the table view.

@@ -11,7 +11,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "DCChannel.h"
 #import "DCMessage.h"
-
+#import "DCContactViewController.h"
 @interface DCChatViewController : UIViewController <UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate>
 - (void)getMessages:(int)numberOfMessages beforeMessage:(DCMessage*)message;
 

@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DCCInfoViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface DCCInfoViewController : UITableViewController
 
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end
