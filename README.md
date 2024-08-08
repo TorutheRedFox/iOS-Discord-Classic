@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://github.com/user-attachments/assets/367c10d2-234a-41c9-933c-c4b494d5c185" height="128" width="128" style="border-radius:25%">
    <h1> Discord Classic (continuation)
-      <br/> <h3 align="center"> Discord client for iOS 5 and 6 with enhanced UI and additional features
+      <br/> <h3 align="center"> Discord client for Legacy iOS with enhanced UI and additional features
    </h1>
 </div>
 
