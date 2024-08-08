@@ -22,7 +22,7 @@ static dispatch_queue_t messages_delete_queue;
 
 - (void)deleteMessage{
 	dispatch_async([self get_messages_delete_queue], ^{
-		NSURL* messageURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discord.com/api/v9/channels/%@/messages/%@", DCServerCommunicator.sharedInstance.selectedChannel.snowflake, self.snowflake]];
+		NSURL* messageURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discordapp.com/api/v9/channels/%@/messages/%@", DCServerCommunicator.sharedInstance.selectedChannel.snowflake, self.snowflake]];
 		
 		NSMutableURLRequest *urlRequest=[NSMutableURLRequest requestWithURL:messageURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10];
         [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];

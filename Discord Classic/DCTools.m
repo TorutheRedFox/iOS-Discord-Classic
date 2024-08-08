@@ -735,7 +735,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
 
 + (void)joinGuild:(NSString*)inviteCode {
     //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-		NSURL* guildURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discord.com/api/v9/invite/%@", inviteCode]];
+		NSURL* guildURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discordapp.com/api/v9/invite/%@", inviteCode]];
         
 		NSMutableURLRequest *urlRequest=[NSMutableURLRequest requestWithURL:guildURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:15];
         [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];

@@ -53,7 +53,7 @@ static dispatch_queue_t channel_send_queue;
 
 - (void)sendMessage:(NSString*)message {
 	dispatch_async([self get_channel_send_queue], ^{
-		NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discord.com/api/v9/channels/%@/messages", self.snowflake]];
+		NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discordapp.com/api/v9/channels/%@/messages", self.snowflake]];
 		
 		NSMutableURLRequest *urlRequest=[NSMutableURLRequest requestWithURL:channelURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10];
         [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];
@@ -92,7 +92,7 @@ static dispatch_queue_t channel_send_queue;
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication sharedApplication].networkActivityIndicatorVisible++;
     });
-    NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discord.com/api/v9/channels/%@/messages", self.snowflake]];
+    NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discordapp.com/api/v9/channels/%@/messages", self.snowflake]];
     
     NSMutableURLRequest *urlRequest=[NSMutableURLRequest requestWithURL:channelURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];
@@ -141,7 +141,7 @@ static dispatch_queue_t channel_send_queue;
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication sharedApplication].networkActivityIndicatorVisible++;
     });
-    NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discord.com/api/v9/channels/%@/messages", self.snowflake]];
+    NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discordapp.com/api/v9/channels/%@/messages", self.snowflake]];
     
     NSMutableURLRequest *urlRequest=[NSMutableURLRequest requestWithURL:channelURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];
@@ -187,7 +187,7 @@ static dispatch_queue_t channel_send_queue;
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication sharedApplication].networkActivityIndicatorVisible++;
     });
-    NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discord.com/api/v9/channels/%@/messages", self.snowflake]];
+    NSURL* channelURL = [NSURL URLWithString: [NSString stringWithFormat:@"https://discordapp.com/api/v9/channels/%@/messages", self.snowflake]];
     
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:channelURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     
@@ -239,7 +239,7 @@ static dispatch_queue_t channel_send_queue;
 
 - (void)sendTypingIndicator{
     dispatch_async([self get_channel_event_queue], ^{
-    NSURL* channelURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://discord.com/api/v9/channels/%@/typing", self.snowflake]];
+    NSURL* channelURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://discordapp.com/api/v9/channels/%@/typing", self.snowflake]];
     
     NSMutableURLRequest *urlRequest=[NSMutableURLRequest requestWithURL:channelURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5]; // low timeout to avoid API spam
     [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];
@@ -264,7 +264,7 @@ static dispatch_queue_t channel_send_queue;
 - (void)ackMessage:(NSString*)messageId{
 	self.lastReadMessageId = messageId;
 	dispatch_async([self get_channel_event_queue], ^{
-		NSURL* channelURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://discord.com/api/v9/channels/%@/messages/%@/ack", self.snowflake, messageId]];
+		NSURL* channelURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://discordapp.com/api/v9/channels/%@/messages/%@/ack", self.snowflake, messageId]];
 		
 		NSMutableURLRequest *urlRequest=[NSMutableURLRequest requestWithURL:channelURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10];
         [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];
@@ -298,7 +298,7 @@ static dispatch_queue_t channel_send_queue;
 	
     NSMutableArray* messages = NSMutableArray.new;
 	//Generate URL from args
-	NSMutableString* getChannelAddress = [[NSString stringWithFormat: @"https://discord.com/api/v9/channels/%@/messages?", self.snowflake] mutableCopy];
+	NSMutableString* getChannelAddress = [[NSString stringWithFormat: @"https://discordapp.com/api/v9/channels/%@/messages?", self.snowflake] mutableCopy];
 	
 	if(numberOfMessages)
 		[getChannelAddress appendString:[NSString stringWithFormat:@"limit=%i", numberOfMessages]];
