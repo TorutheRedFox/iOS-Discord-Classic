@@ -51,16 +51,16 @@
 
 
 - (void)handleNotificationTap:(NSNotification *)notification {
-    NSLog(@"HANDLE NOTIFICATION TAP CALLED");
+    //NSLog(@"HANDLE NOTIFICATION TAP CALLED");
     NSString *channelId = notification.userInfo[@"channelId"];
     if (channelId) {
-        NSLog(@"Navigating to channel with ID: %@", channelId);
+        //NSLog(@"Navigating to channel with ID: %@", channelId);
         [self navigateToChannelWithId:channelId];
     }
 }
 
 -(void)exitedChatController {
-    NSLog(@"EXITING CHAT VIEW");
+    //NSLog(@"EXITING CHAT VIEW");
     self.selectedChannel = nil;
 }
 
@@ -68,9 +68,9 @@
     for (DCGuild *guild in DCServerCommunicator.sharedInstance.guilds) {
         for (DCChannel *channel in guild.channels) {
             if ([channel.snowflake isEqualToString:channelId]) {
-                NSLog(@"channel id: %@", channelId);
+                //NSLog(@"channel id: %@", channelId);
                 if (self.selectedChannel && [self.selectedChannel.snowflake isEqualToString:channelId]) {
-                    NSLog(@"ok");
+                    //NSLog(@"ok");
                     return;
                 }
                 self.selectedGuild = guild;
@@ -168,7 +168,7 @@
 /*
 - (void)initiatebannersequence {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSLog(@"%@ rfuieopkrghiurfeogrtihgurojg", self.selectedGuild.snowflake);
+        //NSLog(@"%@ rfuieopkrghiurfeogrtihgurojg", self.selectedGuild.snowflake);
         NSString *mediaURL = @"https://cdn.discordapp.com/banners/624739448927682611/5278d848560205e7a90172339a315b8e.png?size=480";
         NSURL *mediaImageUrl = [NSURL URLWithString:mediaURL];
         NSData *mediaData = [NSData dataWithContentsOfURL:mediaImageUrl];

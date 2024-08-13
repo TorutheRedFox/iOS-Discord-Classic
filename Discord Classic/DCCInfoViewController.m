@@ -33,7 +33,7 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSLog(@"VIEW DID LOADED = %i", DCServerCommunicator.sharedInstance.selectedChannel.users.count);
+    //NSLog(@"VIEW DID LOADED = %i", DCServerCommunicator.sharedInstance.selectedChannel.users.count);
 }
 
 - (void)didReceiveMemoryWarning

@@ -59,7 +59,7 @@ static dispatch_queue_t chat_messages_queue;
 	
 	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	
-
+    
     [self.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarBG"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     
     //bgimgs
@@ -110,7 +110,7 @@ static dispatch_queue_t chat_messages_queue;
 
 - (void) handleAsyncReload {
     dispatch_async(dispatch_get_main_queue(), ^{
-        //NSLog(@"async reload!");
+        //////NSLog(@"async reload!");
         [self.chatTableView reloadData];
     });
 }
@@ -119,7 +119,7 @@ static dispatch_queue_t chat_messages_queue;
 	
 	if(DCServerCommunicator.sharedInstance.selectedChannel){
 		self.messages = NSMutableArray.new;
-	
+        
 		[self getMessages:50 beforeMessage:nil];
 	}
 	
@@ -155,8 +155,8 @@ static dispatch_queue_t chat_messages_queue;
         }
     }
     
-        [self.messages addObject:newMessage];
-        [self.chatTableView reloadData];
+    [self.messages addObject:newMessage];
+    [self.chatTableView reloadData];
     //});
 	
 	if(self.viewingPresentTime)
@@ -262,41 +262,41 @@ static dispatch_queue_t chat_messages_queue;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.chatTableView reloadData];
     });
-				
+    
 }
 
 
 - (void)getMessages:(int)numberOfMessages beforeMessage:(DCMessage*)message{
     dispatch_async([self get_chat_messages_queue], ^{
-	NSArray* newMessages = [DCServerCommunicator.sharedInstance.selectedChannel getMessages:numberOfMessages beforeMessage:message];
-	
-	if(newMessages){
-		NSRange range = NSMakeRange(0, [newMessages count]);
-		NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-		[self.messages insertObjects:newMessages atIndexes:indexSet];
-		
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.chatTableView reloadData];
-        });
-        dispatch_async(dispatch_get_main_queue(), ^{
-			int scrollOffset = -self.chatTableView.height;
-			for(DCMessage* newMessage in newMessages)
-				scrollOffset += newMessage.contentHeight + (newMessage.attachmentCount * 224) + (newMessage.attachmentCount > 0 ? 11 : 0);
-			
-			[self.chatTableView setContentOffset:CGPointMake(0, scrollOffset) animated:NO];
+        NSArray* newMessages = [DCServerCommunicator.sharedInstance.selectedChannel getMessages:numberOfMessages beforeMessage:message];
+        
+        if(newMessages){
+            NSRange range = NSMakeRange(0, [newMessages count]);
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+            [self.messages insertObjects:newMessages atIndexes:indexSet];
             
-            if (VERSION_MIN(@"6.0") && [newMessages count] > 0 && !self.refreshControl) {
-                self.refreshControl = UIRefreshControl.new;
-                self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Earlier messages"];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.chatTableView reloadData];
+            });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                int scrollOffset = -self.chatTableView.height;
+                for(DCMessage* newMessage in newMessages)
+                    scrollOffset += newMessage.contentHeight + (newMessage.attachmentCount * 224) + (newMessage.attachmentCount > 0 ? 11 : 0);
                 
-                [self.chatTableView addSubview:self.refreshControl];
+                [self.chatTableView setContentOffset:CGPointMake(0, scrollOffset) animated:NO];
                 
-                [self.refreshControl addTarget:self action:@selector(get50MoreMessages:) forControlEvents:UIControlEventValueChanged];
-                
-                self.refreshControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
-            }
-		});
-	}
+                if (VERSION_MIN(@"6.0") && [newMessages count] > 0 && !self.refreshControl) {
+                    self.refreshControl = UIRefreshControl.new;
+                    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Earlier messages"];
+                    
+                    [self.chatTableView addSubview:self.refreshControl];
+                    
+                    [self.refreshControl addTarget:self action:@selector(get50MoreMessages:) forControlEvents:UIControlEventValueChanged];
+                    
+                    self.refreshControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+                }
+            });
+        }
         if (VERSION_MIN(@"6.0")) {
             dispatch_sync(dispatch_get_main_queue(), ^{
                 if(self.refreshControl)
@@ -313,7 +313,7 @@ static dispatch_queue_t chat_messages_queue;
 	DCChatTableCell* cell;
 	
 	DCMessage* messageAtRowIndex = [self.messages objectAtIndex:indexPath.row];
-
+    
     [tableView registerNib:[UINib nibWithNibName:@"DCChatGroupedTableCell" bundle:nil] forCellReuseIdentifier:@"Grouped Message Cell"];
     [tableView registerNib:[UINib nibWithNibName:@"DCChatTableCell" bundle:nil] forCellReuseIdentifier:@"Message Cell"];
     [tableView registerNib:[UINib nibWithNibName:@"DCChatReplyTableCell" bundle:nil] forCellReuseIdentifier:@"Reply Message Cell"];
@@ -415,7 +415,7 @@ static dispatch_queue_t chat_messages_queue;
             
             [cell addSubview:imageView];
         } else if ([attachment isKindOfClass:[DCChatVideoAttachment class]]) {
-            NSLog(@"add video!");
+            ////NSLog(@"add video!");
             DCChatVideoAttachment *video = attachment;
             
             UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedVideo:)];
@@ -436,22 +436,22 @@ static dispatch_queue_t chat_messages_queue;
             
             [cell addSubview:video];
         } else if ([attachment isKindOfClass:[QLPreviewController class]]) {
-            NSLog(@"Add QuickLook!");
+            ////NSLog(@"Add QuickLook!");
             QLPreviewController *preview = attachment;
             
             /*UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedVideo:)];
-            singleTap.numberOfTapsRequired = 1;
-            [video.playButton addGestureRecognizer:singleTap];
-            video.playButton.userInteractionEnabled = YES;
-            
-            CGFloat aspectRatio = video.thumbnail.image.size.width / video.thumbnail.image.size.height;
-            int newWidth = 200 * aspectRatio;
-            int newHeight = 200;
-            if (newWidth > self.chatTableView.width - 66) {
-                newWidth = self.chatTableView.width - 66;
-                newHeight = newWidth / aspectRatio;
-            }
-            [video setFrame:CGRectMake(55, imageViewOffset, newWidth, newHeight)];*/
+             singleTap.numberOfTapsRequired = 1;
+             [video.playButton addGestureRecognizer:singleTap];
+             video.playButton.userInteractionEnabled = YES;
+             
+             CGFloat aspectRatio = video.thumbnail.image.size.width / video.thumbnail.image.size.height;
+             int newWidth = 200 * aspectRatio;
+             int newHeight = 200;
+             if (newWidth > self.chatTableView.width - 66) {
+             newWidth = self.chatTableView.width - 66;
+             newHeight = newWidth / aspectRatio;
+             }
+             [video setFrame:CGRectMake(55, imageViewOffset, newWidth, newHeight)];*/
             
             imageViewOffset += 210;
             
@@ -480,7 +480,10 @@ static dispatch_queue_t chat_messages_queue;
         [messageActionSheet setDelegate:self];
         [messageActionSheet showInView:self.view];
     } else {
-        [self performSegueWithIdentifier:@"chat to contact" sender:self];
+        UIActionSheet *messageActionSheet = [[UIActionSheet alloc] initWithTitle:self.selectedMessage.content delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Reply", @"View Profile", nil];
+        [messageActionSheet setTag:3];
+        [messageActionSheet setDelegate:self];
+        [messageActionSheet showInView:self.view];
     }
 }
 
@@ -503,7 +506,7 @@ static dispatch_queue_t chat_messages_queue;
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                 picker.sourceType = UIImagePickerControllerSourceTypeCamera;
             } else {
-                NSLog(@"Camera not available on this device.");
+                ////NSLog(@"Camera not available on this device.");
                 return;
             }
         } else if (buttonIndex == 1) {
@@ -515,7 +518,15 @@ static dispatch_queue_t chat_messages_queue;
         [picker viewWillAppear:YES];
         [self presentViewController:picker animated:YES completion:nil];
         [picker viewWillAppear:YES];
-    } else {
+    } else if([popup tag] == 3) {
+        if(buttonIndex == 0) {
+            //REPLY
+            //NSLog(@"penis");
+            self.inputField.text = [NSString stringWithFormat:@"> %@\n<@%@> ", self.selectedMessage.content, self.selectedMessage.author.snowflake];
+            
+        } else if(buttonIndex == 1) {
+            [self performSegueWithIdentifier:@"chat to contact" sender:self];
+        }
         
     }
 }
@@ -570,17 +581,17 @@ static dispatch_queue_t chat_messages_queue;
 
 - (IBAction)sendMessage:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^{
-	if(![self.inputField.text isEqual: @""]){
+        if(![self.inputField.text isEqual: @""]){
+            
+            [DCServerCommunicator.sharedInstance.selectedChannel sendMessage:self.inputField.text];
+            [self.inputField setText:@""];
+            self.inputFieldPlaceholder.hidden = NO;
+            lastTimeInterval = 0;
+        }else
+            [self.inputField resignFirstResponder];
         
-		[DCServerCommunicator.sharedInstance.selectedChannel sendMessage:self.inputField.text];
-		[self.inputField setText:@""];
-        self.inputFieldPlaceholder.hidden = NO;
-        lastTimeInterval = 0;
-	}else
-		[self.inputField resignFirstResponder];
-	
-	if(self.viewingPresentTime)
-		[self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height) animated:YES];
+        if(self.viewingPresentTime)
+            [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height) animated:YES];
     });
 }
 
@@ -592,14 +603,14 @@ static dispatch_queue_t chat_messages_queue;
 
 -(void)tappedVideo:(UITapGestureRecognizer *)sender {
     [self.inputField resignFirstResponder];
-    NSLog(@"Tapped video!");
+    ////NSLog(@"Tapped video!");
     dispatch_async(dispatch_get_main_queue(), ^{
         MPMoviePlayerViewController *player;
         @try {
             NSURL *url = ((DCChatVideoAttachment*)((UIImageView*)sender.view).superview).videoURL;
             player = [[MPMoviePlayerViewController alloc] initWithContentURL: url];
         } @catch (id exception) {
-            NSLog(@"Silly movie error %@", exception);
+            ////NSLog(@"Silly movie error %@", exception);
         }
         player.moviePlayer.repeatMode = MPMovieRepeatModeOne;
         UIWindow *backgroundWindow = [[UIApplication sharedApplication] keyWindow];
@@ -681,11 +692,11 @@ static dispatch_queue_t chat_messages_queue;
         } else if ([extension caseInsensitiveCompare:@"mp4"] == NSOrderedSame) {
             mimeType = @"video/mp4";
         } else {
-            NSLog(@"Unsupported video format: %@", extension);
+            ////NSLog(@"Unsupported video format: %@", extension);
             return;
         }
         
-        NSLog(@"MIME type %@", mimeType);
+        ////NSLog(@"MIME type %@", mimeType);
         
         // Use the sendVideo:mimeType: function to send the video
         [DCServerCommunicator.sharedInstance.selectedChannel sendVideo:videoURL mimeType:mimeType];
@@ -718,7 +729,7 @@ static dispatch_queue_t chat_messages_queue;
                      }
                     failureBlock:^(NSError *error)
              {
-                 NSLog(@"couldn't get asset: %@", error);
+                 ////NSLog(@"couldn't get asset: %@", error);
                  
              }
              ];
@@ -732,7 +743,7 @@ static dispatch_queue_t chat_messages_queue;
 -(void)get50MoreMessages:(UIRefreshControl *)control {
     //dispatch_queue_t apiQueue = dispatch_queue_create([[NSString stringWithFormat:@"Discord::API::Receive::getMessages%i", arc4random_uniform(4)] UTF8String], NULL);
     //dispatch_async(apiQueue, ^{
-        [self getMessages:50 beforeMessage:[self.messages objectAtIndex:0]];
+    [self getMessages:50 beforeMessage:[self.messages objectAtIndex:0]];
     //});
     //dispatch_release(apiQueue);
 }

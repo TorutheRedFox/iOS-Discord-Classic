@@ -160,7 +160,7 @@ UIActivityIndicatorView *spinner;
 			int op = [[parsedJsonResponse valueForKey:@"op"] integerValue];
 			NSDictionary* d = [parsedJsonResponse valueForKey:@"d"];
 			
-			NSLog(@"Got op code %i", op);
+			//NSLog(@"Got op code %i", op);
 			
 			//revcieved HELLO eventd
 			switch(op){
@@ -168,7 +168,7 @@ UIActivityIndicatorView *spinner;
 				case 10: {
 					
 					if(weakSelf.shouldResume){
-						NSLog(@"Sending Resume with sequence number %i, session ID %@", weakSelf.sequenceNumber, weakSelf.sessionId);
+						//NSLog(@"Sending Resume with sequence number %i, session ID %@", weakSelf.sequenceNumber, weakSelf.sessionId);
 						
 						//RESUME
 						[weakSelf sendJSON:@{
@@ -184,7 +184,7 @@ UIActivityIndicatorView *spinner;
 						
 					}else{
 						
-						NSLog(@"Sending Identify");
+						//NSLog(@"Sending Identify");
 						
 						//IDENTIFY
 						[weakSelf sendJSON:@{
@@ -219,7 +219,7 @@ UIActivityIndicatorView *spinner;
 							static dispatch_once_t once;
 							dispatch_once(&once, ^ {
 								
-								NSLog(@"Heartbeat is %d seconds", heartbeatInterval/1000);
+								//NSLog(@"Heartbeat is %d seconds", heartbeatInterval/1000);
 								
 								//Begin heartbeat cycle if not already begun
 								[NSTimer scheduledTimerWithTimeInterval:heartbeatInterval/1000 target:weakSelf selector:@selector(sendHeartbeat:) userInfo:nil repeats:YES];
@@ -242,7 +242,7 @@ UIActivityIndicatorView *spinner;
 					NSString* t = [parsedJsonResponse valueForKey:@"t"];
 					weakSelf.sequenceNumber = [[parsedJsonResponse valueForKey:@"s"] integerValue];
 					
-					NSLog(@"Got event %@ with sequence number %i", t, weakSelf.sequenceNumber);
+					//NSLog(@"Got event %@ with sequence number %i", t, weakSelf.sequenceNumber);
 					
 					//recieved READY
                     if(![[parsedJsonResponse valueForKey:@"t"] isKindOfClass:[NSString class]]) {
@@ -250,7 +250,7 @@ UIActivityIndicatorView *spinner;
                     } else if([t isEqualToString:@"READY"]){
 						dispatch_async(dispatch_get_main_queue(), ^{
                             weakSelf.didAuthenticate = true;
-                            NSLog(@"Did authenticate!");
+                            //NSLog(@"Did authenticate!");
                             [weakSelf dismissNotification];
                             
                             //Grab session id (used for RESUME) and user id
@@ -542,7 +542,7 @@ UIActivityIndicatorView *spinner;
 					
 					
 				case 11: {
-					NSLog(@"Got heartbeat response");
+					//NSLog(@"Got heartbeat response");
 					weakSelf.didRecieveHeartbeatResponse = true;
                     if ([UIApplication sharedApplication].networkActivityIndicatorVisible > 0)
                         [UIApplication sharedApplication].networkActivityIndicatorVisible--;
@@ -575,7 +575,7 @@ UIActivityIndicatorView *spinner;
 
 - (void)reconnect{
 	
-	NSLog(@"Identify cooldown %s", self.identifyCooldown ? "true" : "false");
+	//NSLog(@"Identify cooldown %s", self.identifyCooldown ? "true" : "false");
 	
 	//Begin new session
 	[self.websocket close];
@@ -583,12 +583,12 @@ UIActivityIndicatorView *spinner;
 	//If an identify cooldown is in effect, wait for the time needed until sending another IDENTIFY
 	//if not, send immediately
 	if(self.identifyCooldown){
-		NSLog(@"No cooldown in effect. Authenticating...");
+		//NSLog(@"No cooldown in effect. Authenticating...");
 		[self.alertView setTitle:@"Authenticating"];
 		[self startCommunicator];
 	}else{
 		double timeRemaining = self.cooldownTimer.fireDate.timeIntervalSinceNow;
-		NSLog(@"Cooldown in effect. Time left %f", timeRemaining);
+		//NSLog(@"Cooldown in effect. Time left %f", timeRemaining);
 		//[self.notificationView setTitle:@"Waiting for auth cooldown..."];
         [self showNonIntrusiveNotificationWithTitle:@"Waiting for auth cooldown..."];
 		[self performSelector:@selector(startCommunicator) withObject:nil afterDelay:timeRemaining + 1];
@@ -603,24 +603,24 @@ UIActivityIndicatorView *spinner;
 	if(self.didRecieveHeartbeatResponse){
 		[NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(checkForRecievedHeartbeat:) userInfo:nil repeats:NO];
 		[self sendJSON:@{ @"op": @1, @"d": @(self.sequenceNumber)}];
-		NSLog(@"Sent heartbeat");
+		//NSLog(@"Sent heartbeat");
 		[self setDidRecieveHeartbeatResponse:false];
         self.didTryResume = false;
 	} else if (self.didTryResume) {
-        NSLog(@"Did not get resume, trying reconnect instead with sequence %i %@", self.sequenceNumber, self.sessionId);
+        //NSLog(@"Did not get resume, trying reconnect instead with sequence %i %@", self.sequenceNumber, self.sessionId);
         [self reconnect];
         self.didTryResume = false;
     } else {
 		//If we didnt get a response in between heartbeats, we've disconnected from the websocket
 		//send a RESUME to reconnect
-		NSLog(@"Did not get heartbeat response, sending RESUME with sequence %i %@ (sendHeartbeat)", self.sequenceNumber, self.sessionId);
+		//NSLog(@"Did not get heartbeat response, sending RESUME with sequence %i %@ (sendHeartbeat)", self.sequenceNumber, self.sessionId);
 		[self sendResume];
 	}
 }
 
 - (void)checkForRecievedHeartbeat:(NSTimer *)timer{
 	if(!self.didRecieveHeartbeatResponse){
-		NSLog(@"Did not get heartbeat response, sending RESUME with sequence %i %@ (checkForRecievedHeartbeat)", self.sequenceNumber, self.sessionId);
+		//NSLog(@"Did not get heartbeat response, sending RESUME with sequence %i %@ (checkForRecievedHeartbeat)", self.sequenceNumber, self.sessionId);
 		[self sendResume];
 	}
 }
@@ -628,7 +628,7 @@ UIActivityIndicatorView *spinner;
 //Once the 5 second identify cooldown is over
 - (void)refreshIdentifyCooldown:(NSTimer *)timer{
 	self.identifyCooldown = true;
-	NSLog(@"Authentication cooldown ended");
+	//NSLog(@"Authentication cooldown ended");
 }
 
 - (void)sendJSON:(NSDictionary*)dictionary{

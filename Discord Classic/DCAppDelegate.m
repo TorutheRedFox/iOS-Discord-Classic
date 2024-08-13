@@ -33,9 +33,9 @@
         NSDictionary *notification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
         NSDictionary *aps = notification[@"aps"];
         NSString *channelId = aps[@"channelId"]; // Adjusted to reflect your payload structure
-        NSLog(@"Channel id: %@", channelId);
+        //NSLog(@"Channel id: %@", channelId);
         if (channelId) {
-            NSLog(@"App launched with notification, channelId: %@", channelId);
+            //NSLog(@"App launched with notification, channelId: %@", channelId);
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NavigateToChannel" object:nil userInfo:@{@"channelId": channelId}];
             });
@@ -50,11 +50,11 @@
 
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    NSLog(@"RECEIVED REMOTE NOTIFICATION");
+    //NSLog(@"RECEIVED REMOTE NOTIFICATION");
     
     NSDictionary *aps = userInfo[@"aps"];
     NSString *channelId = aps[@"channelId"];
-    NSLog(@"Received notification with Channel id: %@", channelId);
+    //NSLog(@"Received notification with Channel id: %@", channelId);
     
     if (channelId) {
         UIApplicationState state = [application applicationState];
@@ -64,29 +64,29 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NavigateToChannel" object:nil userInfo:@{@"channelId": channelId}];
             });
         } else {
-            NSLog(@"FUCK YOU LJB I HATE YOU");
+            //NSLog(@"FUCK YOU LJB I HATE YOU");
         }
     }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application{
-	NSLog(@"Will resign active");
+	//NSLog(@"Will resign active");
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application{
-	NSLog(@"Did enter background");
+	//NSLog(@"Did enter background");
 	self.shouldReload = DCServerCommunicator.sharedInstance.didAuthenticate;
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application{
-	NSLog(@"Will enter foreground");
+	//NSLog(@"Will enter foreground");
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application{
-	NSLog(@"Did become active");
+	//NSLog(@"Did become active");
 	if(self.shouldReload){
 		[DCServerCommunicator.sharedInstance sendResume];
 	}
@@ -94,7 +94,7 @@
 
 
 - (void)applicationWillTerminate:(UIApplication *)application{
-	NSLog(@"Will terminate");
+	//NSLog(@"Will terminate");
 }
 
 @end

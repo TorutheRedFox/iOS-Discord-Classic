@@ -451,7 +451,7 @@ typedef enum {
             [self closeConnection];
             break;
         default:
-            NSLog(@"Unknown event");
+            //NSLog(@"Unknown event");
             break;
     }
 }
@@ -515,7 +515,7 @@ typedef enum {
     
     CFRelease(message);
     
-//    NSLog(@"%@", [[NSString alloc] initWithData:dataToSend encoding:NSUTF8StringEncoding]);
+//    //NSLog(@"%@", [[NSString alloc] initWithData:dataToSend encoding:NSUTF8StringEncoding]);
 }
 
 - (BOOL)isValidHandshake:(CFHTTPMessageRef)response {
@@ -559,7 +559,7 @@ typedef enum {
     WSSafeCFRelease(acceptValue);
 
 //    CFDataRef messageData = CFHTTPMessageCopySerializedMessage(response);
-//    NSLog(@"%@", [[NSString alloc] initWithData:(__bridge_transfer NSData*)messageData encoding:NSUTF8StringEncoding]);
+//    //NSLog(@"%@", [[NSString alloc] initWithData:(__bridge_transfer NSData*)messageData encoding:NSUTF8StringEncoding]);
 
     return isValid;
 }

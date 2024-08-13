@@ -31,13 +31,13 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
 	NSURL *url = [NSURL URLWithString:urlString];
     
     if (url == nil) {
-        NSLog(@"processImageDataWithURLString: nil URL encountered. Ignoring...");
+        //NSLog(@"processImageDataWithURLString: nil URL encountered. Ignoring...");
         processImage(nil);
         return;
     }
     
     if (!imageCache) {
-        NSLog(@"Creating image cache");
+        //NSLog(@"Creating image cache");
         imageCache = [[NSCache alloc] init];
     }
     
@@ -54,9 +54,9 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
     UIImage *image = [imageCache objectForKey:[url absoluteString]];
     
     if (image) {
-        NSLog(@"Image %@ exists in cache", [url absoluteString]);
+        //NSLog(@"Image %@ exists in cache", [url absoluteString]);
     } else {
-        NSLog(@"Image %@ doesn't exist in cache", [url absoluteString]);
+        //NSLog(@"Image %@ doesn't exist in cache", [url absoluteString]);
     }
     
     __block id cacheWait = [imageCache objectForKey:[url absoluteString]];
@@ -76,7 +76,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
                 
                 __block UIImage *image = [imageCache objectForKey:[url absoluteString]];
                 if (!image) {
-                    NSLog(@"Image not cached!");
+                    //NSLog(@"Image not cached!");
                     [imageCache setObject:@"l" forKey:[url absoluteString]]; // mark as loading
                     NSURLResponse* urlResponse;
                     NSError* error;
@@ -93,7 +93,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
                             [imageCache setObject:image forKey:[url absoluteString]];
                         else
                             [imageCache setObject:[NSNull alloc] forKey:[url absoluteString]];
-                        NSLog(@"Image added to cache");
+                        //NSLog(@"Image added to cache");
                     });
                 }
                 
@@ -111,7 +111,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
                 });
             });
     } else {
-        NSLog(@"Image cached!");
+        //NSLog(@"Image cached!");
         processImage(image);
     }
 	
@@ -270,7 +270,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
         newMessage.timestamp = [dateFormatter dateFromString: [jsonMessage valueForKey:@"timestamp"]];
     }
     if (newMessage.timestamp == nil)
-        NSLog(@"Invalid timestamp %@", [jsonMessage valueForKey:@"timestamp"]);
+        //NSLog(@"Invalid timestamp %@", [jsonMessage valueForKey:@"timestamp"]);
     
     if ([jsonMessage valueForKey:@"edited_timestamp"] != [NSNull null]) {
         newMessage.editedTimestamp = [dateFormatter dateFromString: [jsonMessage valueForKey:@"edited_timestamp"]];
@@ -416,7 +416,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
                                 [NSNotificationCenter.defaultCenter postNotificationName:@"RELOAD CHAT DATA" object:nil];
                             });
                         } else {
-                            NSLog(@"Failed to load video thumbnail!");
+                            //NSLog(@"Failed to load video thumbnail!");
                         }
                     }];
                     
@@ -426,7 +426,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
                     [newMessage.attachments addObject:video];
                 });
             } else {
-                NSLog(@"unknown embed type %@", embedType);
+                //NSLog(@"unknown embed type %@", embedType);
                 continue;
             }
 		}
@@ -522,7 +522,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
                                 [NSNotificationCenter.defaultCenter postNotificationName:@"RELOAD CHAT DATA" object:nil];
                             });
                         } else {
-                            NSLog(@"Failed to load video thumbnail!");
+                            //NSLog(@"Failed to load video thumbnail!");
                         }
                     }];
                     
@@ -532,7 +532,7 @@ static dispatch_queue_t dispatchQueues[MAX_IMAGE_THREADS];
                     [newMessage.attachments addObject:video];
                 });
             } else {
-                NSLog(@"unknown attachment type %@", fileType);
+                //NSLog(@"unknown attachment type %@", fileType);
                 newMessage.content = [NSString stringWithFormat:@"%@\n%@", newMessage.content, [attachment valueForKey:@"url"]];
                 continue;
             }
