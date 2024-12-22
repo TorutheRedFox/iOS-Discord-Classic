@@ -101,7 +101,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Icon.png" width="57" height="57"/>
+        <image name="Icon.png" width="72" height="72"/>
         <image name="reply.png" width="96" height="40"/>
         <image name="separator.png" width="320" height="4"/>
     </resources>

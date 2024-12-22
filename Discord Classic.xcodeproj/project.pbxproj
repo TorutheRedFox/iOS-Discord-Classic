@@ -149,7 +149,7 @@
 		09A4EA662079220E00DECFD6 /* DCChatTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DCChatTableCell.xib; path = ../DCChatTableCell.xib; sourceTree = "<group>"; };
 		09A4EA6D2079266800DECFD6 /* DCChatTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCChatTableCell.h; sourceTree = "<group>"; };
 		09A4EA6E2079266800DECFD6 /* DCChatTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCChatTableCell.m; sourceTree = "<group>"; };
-		09C0F691204E4823000C8EA6 /* Discord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Discord.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		09C0F691204E4823000C8EA6 /* Discord.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Discord.app; path = "/Users/methamphetamine/Developer/GitHub/Discord-Shennanigans/iOS-Discord-Classic/build/Debug-iphoneos/Discord.app"; sourceTree = "<absolute>"; };
 		09C344B521A0B984005F8CEE /* DCImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCImageViewController.h; sourceTree = "<group>"; };
 		09C344B621A0B984005F8CEE /* DCImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCImageViewController.m; sourceTree = "<group>"; };
 		09C6B924204A0F54007EAC26 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -349,7 +349,6 @@
 				095284622055EFDA00760073 /* Etc */,
 				09C6B92A204A0F54007EAC26 /* Discord Classic */,
 				09C6B923204A0F54007EAC26 /* Frameworks */,
-				09C0F691204E4823000C8EA6 /* Discord.app */,
 			);
 			sourceTree = "<group>";
 		};

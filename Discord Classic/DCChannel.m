@@ -294,83 +294,198 @@ static dispatch_queue_t channel_send_queue;
 
 
 
-- (NSArray*)getMessages:(int)numberOfMessages beforeMessage:(DCMessage*)message{
-	
-    NSMutableArray* messages = NSMutableArray.new;
-	//Generate URL from args
-	NSMutableString* getChannelAddress = [[NSString stringWithFormat: @"https://discordapp.com/api/v9/channels/%@/messages?", self.snowflake] mutableCopy];
-	
-	if(numberOfMessages)
-		[getChannelAddress appendString:[NSString stringWithFormat:@"limit=%i", numberOfMessages]];
-	if(numberOfMessages && message)
-		[getChannelAddress appendString:@"&"];
-	if(message)
-		[getChannelAddress appendString:[NSString stringWithFormat:@"before=%@", message.snowflake]];
+- (NSArray*)getMessages:(int)numberOfMessages beforeMessage:(DCMessage*)message {
     
-	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:getChannelAddress] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:15];
+    NSMutableArray* messages = NSMutableArray.new;
+    // Generate URL from args
+    NSMutableString* getChannelAddress = [[NSString stringWithFormat: @"https://discordapp.com/api/v9/channels/%@/messages?", self.snowflake] mutableCopy];
+    
+    if (numberOfMessages)
+        [getChannelAddress appendString:[NSString stringWithFormat:@"limit=%i", numberOfMessages]];
+    if (numberOfMessages && message)
+        [getChannelAddress appendString:@"&"];
+    if (message)
+        [getChannelAddress appendString:[NSString stringWithFormat:@"before=%@", message.snowflake]];
+    
+    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:getChannelAddress] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:15];
     [urlRequest setValue:@"no-store" forHTTPHeaderField:@"Cache-Control"];
-	
-	[urlRequest addValue:DCServerCommunicator.sharedInstance.token forHTTPHeaderField:@"Authorization"];
-	[urlRequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-	
-	NSError *error = nil;
+    
+    [urlRequest addValue:DCServerCommunicator.sharedInstance.token forHTTPHeaderField:@"Authorization"];
+    [urlRequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *error = nil;
     NSHTTPURLResponse *responseCode = nil;
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [UIApplication sharedApplication].networkActivityIndicatorVisible++;
-        });
-        NSData *response = [DCTools checkData:[NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&responseCode error:&error] withError:error];
-        dispatch_sync(dispatch_get_main_queue(), ^{
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [UIApplication sharedApplication].networkActivityIndicatorVisible++;
+    });
+    
+    NSData *response = [DCTools checkData:[NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&responseCode error:&error] withError:error];
+    
+    dispatch_sync(dispatch_get_main_queue(), ^{
         if ([UIApplication sharedApplication].networkActivityIndicatorVisible > 0)
             [UIApplication sharedApplication].networkActivityIndicatorVisible--;
         else if ([UIApplication sharedApplication].networkActivityIndicatorVisible < 0)
             [UIApplication sharedApplication].networkActivityIndicatorVisible = 0;
-        });
-        if(response){
-            dispatch_sync(dispatch_get_main_queue(), ^{
+    });
+    
+    if (response) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
             NSError *error = nil;
             NSArray* parsedResponse = [NSJSONSerialization JSONObjectWithData:response options:0 error:&error];
-		
-            if(parsedResponse.count > 0)
-                for(NSDictionary* jsonMessage in parsedResponse)
-                    [messages insertObject:[DCTools convertJsonMessage:jsonMessage] atIndex:0];
-		
-            for (int i=0; i < messages.count; i++)
-            {
+            
+            NSLog(@"[getMessages] Original JSON payload: %@", parsedResponse);
+            
+            if (parsedResponse.count > 0) {
+                for (NSDictionary* jsonMessage in parsedResponse) {
+                    // Check if the message is a call
+                    NSDictionary *callData = [jsonMessage objectForKey:@"call"];
+                    
+                    if (callData != nil) {
+                        // Handle call messages
+                        NSString *endedTimestamp = [callData objectForKey:@"ended_timestamp"];
+                        NSArray *participants = [callData objectForKey:@"participants"];
+                        NSMutableDictionary *mutableJsonMessage = [jsonMessage mutableCopy];
+                        
+                        // Setup the date formatter for both timestamps
+                        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];  // Adjusted format for seconds
+                        [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];  // Set UTC for consistency
+                        
+                        // Function to truncate timestamp strings
+                        NSString* (^truncateTimestamp)(NSString*) = ^NSString* (NSString* timestamp) {
+                            if (timestamp.length > 19) {
+                                return [timestamp substringToIndex:19];  // Truncate after seconds
+                            }
+                            return timestamp;
+                        };
+                        
+                        // Truncate the timestamps before parsing
+                        NSString *startTimestamp = truncateTimestamp([jsonMessage objectForKey:@"timestamp"]);
+                        NSString *truncatedEndTimestamp = truncateTimestamp(endedTimestamp);
+                        
+                        NSDate *startDate = [formatter dateFromString:startTimestamp];
+                        NSDate *endDate = [formatter dateFromString:truncatedEndTimestamp];
+                        
+                        NSLog(@"[getMessages] Parsed startDate: %@ from timestamp: %@", startDate, startTimestamp);
+                        NSLog(@"[getMessages] Parsed endDate: %@ from ended_timestamp: %@", endDate, truncatedEndTimestamp);
+                        
+                        // Differentiate between missed, ongoing, and normal calls
+                        NSString *callStatus = @"";
+                        if (participants.count == 1) {
+                            // Missed call handling
+                            if (startDate) {
+                                NSDate *currentDate = [NSDate date];
+                                NSTimeInterval timeDifference = [currentDate timeIntervalSinceDate:startDate];
+                                NSInteger hours = timeDifference / 3600;
+                                NSInteger minutes = (timeDifference / 60) / 60;
+                                
+                                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                                [dateFormatter setDateFormat:@"d MMMM yyyy 'at' HH:mm"];  // For long format display
+                                
+                                if (timeDifference < 24 * 3600) {
+                                    if (hours > 0) {
+                                        callStatus = [NSString stringWithFormat:@"📞 Missed call %ld hours ago", (long)hours];
+                                    } else {
+                                        callStatus = [NSString stringWithFormat:@"📞 Missed call %ld minutes ago", (long)minutes];
+                                    }
+                                } else {
+                                    // Display full date and time if older than 24 hours
+                                    callStatus = [NSString stringWithFormat:@"📞 Missed call on %@", [dateFormatter stringFromDate:startDate]];
+                                }
+                            } else {
+                                callStatus = @"📞 Missed call";
+                            }
+                        } else if (participants.count >= 2 && endedTimestamp != nil) {
+                            // Normal call if two or more participants and an end timestamp
+                            if (startDate && endDate) {
+                                NSTimeInterval duration = [endDate timeIntervalSinceDate:startDate];
+                                NSInteger hours = duration / 3600;
+                                NSInteger minutes = (NSInteger)(duration / 60) % 60;
+                                
+                                NSLog(@"[getMessages] Call duration: %ld hours, %ld minutes", (long)hours, (long)minutes);
+                                
+                                if (hours > 0) {
+                                    callStatus = [NSString stringWithFormat:@"📞 Call that lasted %ld hours and %ld minutes", (long)hours, (long)minutes];
+                                } else if (minutes > 0) {
+                                    callStatus = [NSString stringWithFormat:@"📞 Call that lasted %ld minutes", (long)minutes];
+                                } else {
+                                    callStatus = @"📞 Call that lasted less than a minute";
+                                }
+                            } else {
+                                callStatus = @"📞 Call with unknown duration";
+                            }
+                        } else if (participants.count >= 2 && endedTimestamp == nil) {
+                            // Ongoing call if two or more participants and no end timestamp
+                            callStatus = @"📞 Ongoing call";
+                        }
+                        
+                        // Set the calculated call status as content
+                        [mutableJsonMessage setObject:callStatus forKey:@"content"];
+                        
+                        [messages insertObject:[DCTools convertJsonMessage:mutableJsonMessage] atIndex:0];
+                    } else {
+                        // Handle normal messages like replies, images, etc.
+                        BOOL hasAttachments = [jsonMessage objectForKey:@"attachments"] != nil;
+                        BOOL isReply = [jsonMessage objectForKey:@"referenced_message"] != nil;
+                        NSNumber *messageType = [jsonMessage objectForKey:@"type"];
+                        
+                        if (isReply) {
+                            // Process replies normally
+                            [messages insertObject:[DCTools convertJsonMessage:jsonMessage] atIndex:0];
+                        } else if (hasAttachments) {
+                            // Process attachments (images, etc.)
+                            [messages insertObject:[DCTools convertJsonMessage:jsonMessage] atIndex:0];
+                        } else if (messageType != nil && [messageType integerValue] != 0) {
+                            // Replace unsupported message types
+                            NSMutableDictionary *mutableJsonMessage = [jsonMessage mutableCopy];
+                            [mutableJsonMessage setObject:@"Unsupported message type" forKey:@"content"];
+                            [messages insertObject:[DCTools convertJsonMessage:mutableJsonMessage] atIndex:0];
+                        } else {
+                            // Normal text message
+                            [messages insertObject:[DCTools convertJsonMessage:jsonMessage] atIndex:0];
+                        }
+                    }
+                }
+            }
+            
+            for (int i = 0; i < messages.count; i++) {
                 DCMessage* prevMessage;
-                if (i==0)
+                if (i == 0)
                     prevMessage = message;
                 else
                     prevMessage = [messages objectAtIndex:i-1];
+                
                 DCMessage* currentMessage = [messages objectAtIndex:i];
+                
                 if (prevMessage != nil) {
                     NSDateComponents* curComponents = [[NSCalendar currentCalendar] components:kCFCalendarUnitHour | kCFCalendarUnitDay | kCFCalendarUnitMonth | kCFCalendarUnitYear fromDate:currentMessage.timestamp];
                     NSDateComponents* prevComponents = [[NSCalendar currentCalendar] components:kCFCalendarUnitHour | kCFCalendarUnitDay | kCFCalendarUnitMonth | kCFCalendarUnitYear fromDate:prevMessage.timestamp];
-               
+                    
                     if (prevMessage.author.snowflake == currentMessage.author.snowflake
                         && ([currentMessage.timestamp timeIntervalSince1970] - [prevMessage.timestamp timeIntervalSince1970] < 420)
                         && curComponents.day == prevComponents.day
                         && curComponents.month == prevComponents.month
                         && curComponents.year == prevComponents.year) {
                         currentMessage.isGrouped = currentMessage.referencedMessage == nil;
-                   
+                        
                         if (currentMessage.isGrouped) {
                             float contentWidth = UIScreen.mainScreen.bounds.size.width - 63;
                             CGSize authorNameSize = [currentMessage.author.globalName sizeWithFont:[UIFont boldSystemFontOfSize:15] constrainedToSize:CGSizeMake(contentWidth, MAXFLOAT) lineBreakMode:UILineBreakModeWordWrap];
-                       
+                            
                             currentMessage.contentHeight -= authorNameSize.height + 4;
                         }
                     }
                 }
             }
-            });
-            
-            if(messages.count > 0)
-                return messages;
-            
-            [DCTools alert:@"No messages!" withMessage:@"No further messages could be found"];
+        });
+        
+        if (messages.count > 0)
+            return messages;
+        
+        [DCTools alert:@"No messages!" withMessage:@"No further messages could be found"];
     }
     
-	return nil;
+    return nil;
 }
 
 
